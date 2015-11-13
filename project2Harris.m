@@ -119,3 +119,19 @@ scatter(inliers1(:,1), inliers1(:, 2), ...
         36, cmap, 'fill', 'LineWidth', 5);
 scatter(inliers2(:,1)+512+1, inliers2(:, 2), ...
         36, cmap, 'fill', 'LineWidth', 5);
+		
+% mosaicing/stitching
+warp = imwarp(gray1(:,:), H);
+% display warped image 1 compared to original image 1
+figure;
+imshowpair(gray2(:,:), warp, 'montage');
+% display warped image 1 next to original image 2
+figure;
+imshowpair(warp, gray2(:,:), 'montage');
+tform = maketform('projective', H.T);
+[stitched_image, stitched_mask, im1, im2] = stitch(gray2(:,:), ...
+                                                   gray1(:,:), ...
+                                                   tform);
+
+figure;
+imshow(stitched_image);
