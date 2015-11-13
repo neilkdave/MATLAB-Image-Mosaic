@@ -79,3 +79,43 @@ for i = 1:length(Correspondences)
          '-o', 'MarkerFaceColor', cmap(i,:), ...
          'LineWidth', 2, 'Color', cmap(i,:));
 end
+
+% ransac and homography
+m1 = Correspondences(:,:,1);
+m1(:,[1,2])=m1(:,[2,1]);
+m2 = Correspondences(:,:,2);
+m2(:,[1,2])=m2(:,[2,1]);
+[H, inliers1, inliers2] = estimateGeometricTransform(m1, m2, 'projective');
+
+% display inliers and outliers from best homography found 
+% from the interesting points with high correlation which ones 
+% fit the homography
+figure;
+cmap = hsv(length(inliers1));
+imshowpair(gray1(:,:), gray2(:,:), 'montage');
+hold on;
+scatter(m1(:,1), m1(:,2), 'rx', 'LineWidth', 2);
+scatter(m2(:,1)+512+1, m2(:,2), 'gx', 'LineWidth', 2);
+scatter(inliers1(:,1), inliers1(:, 2), ...
+        36, cmap, 'fill', 'LineWidth', 5);
+scatter(inliers2(:,1)+512+1, inliers2(:, 2), ...
+        36, cmap, 'fill', 'LineWidth', 5);% ransac and homography
+m1 = Correspondences(:,:,1);
+m1(:,[1,2])=m1(:,[2,1]);
+m2 = Correspondences(:,:,2);
+m2(:,[1,2])=m2(:,[2,1]);
+[H, inliers1, inliers2] = estimateGeometricTransform(m1, m2, 'projective');
+
+% display inliers and outliers from best homography found 
+% from the interesting points with high correlation which ones 
+% fit the homography
+figure;
+cmap = hsv(length(inliers1));
+imshowpair(gray1(:,:), gray2(:,:), 'montage');
+hold on;
+scatter(m1(:,1), m1(:,2), 'rx', 'LineWidth', 2);
+scatter(m2(:,1)+512+1, m2(:,2), 'gx', 'LineWidth', 2);
+scatter(inliers1(:,1), inliers1(:, 2), ...
+        36, cmap, 'fill', 'LineWidth', 5);
+scatter(inliers2(:,1)+512+1, inliers2(:, 2), ...
+        36, cmap, 'fill', 'LineWidth', 5);
