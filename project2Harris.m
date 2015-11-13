@@ -60,3 +60,22 @@ for i = 1:length(C1)
     end
 end
 Correspondences = Correspondences(1:count,:,:);
+
+% display matching corners with image 1 above image 2
+% interesting points with high correlation
+figure;
+cmap = hsv(length(Correspondences));
+bothImgs = zeros(340*2, 512);
+bothImgs(1:340,1:end) = gray1(:,:);
+bothImgs(340+1:end,1:end) = gray2(:,:);
+imshow(bothImgs/255);
+hold on;
+plot(C1(:,2), C1(:,1), 'rx', 'MarkerSize', 7, 'LineWidth', 2);
+plot(C2(:,2), C2(:,1)+340+1, 'bx', 'MarkerSize', 7, 'LineWidth', 2);
+
+for i = 1:length(Correspondences)
+    plot([Correspondences(i,2,1), Correspondences(i,2,2)], ...
+         [Correspondences(i,1,1), Correspondences(i,1,2)+340+1], ...
+         '-o', 'MarkerFaceColor', cmap(i,:), ...
+         'LineWidth', 2, 'Color', cmap(i,:));
+end
